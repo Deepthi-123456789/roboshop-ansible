@@ -2,7 +2,60 @@
   hosts: catalogue
   become: yes
   tasks:
-  - name: disabling old  version and enabling nodejs:18
-    ansible.builtin.command: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
+  - name: disabling old  version and enabling nodejs
+    ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:18 -y
 
-  -name: 
+  - name: install nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+  - name: adding user
+    ansible.builtin.user:
+      name: roboshop
+  
+  - name: creating directory
+    ansible.builtin.files:
+      path: /app
+      state: directory
+
+  - name: download catalogue application
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/catalogue.zip
+      dest: /tmp
+
+  - name: unzipping the file
+    ansible.builtin.unarchive:
+      src: /tmp/catalogue.zip
+      dest: /app
+      remote_src: yes
+
+  - name: installing npm
+    ansible.builtin.command: npm install
+    args:
+      chdir: cd /app
+
+
+  - name: copy catalogue services
+    ansible.builtin.copy:
+      src: catalogue.service 
+      dest: /etc/systemd/system/catalogue.service
+
+
+  - name: start and enable mongodb
+    ansible.builtin.service:
+      daemon-reload: true
+      name: mongod
+      state: started
+      enabled: yes
+
+  - name: copy mongodb
+    ansible.builtin.copy:
+      src: mongo.repo  
+      dest: /etc/yum.repos.d/mongo.repo
+
+
+  - name: install mongodb-clinet
+    ansible.builtin.package:
+      name: mongodb-org-shell
+      state: present 
