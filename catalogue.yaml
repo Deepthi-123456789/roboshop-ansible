@@ -15,7 +15,7 @@
       name: roboshop
   
   - name: creating directory
-    ansible.builtin.files:
+    ansible.builtin.file:
       path: /app
       state: directory
 
@@ -55,7 +55,7 @@
       dest: /etc/yum.repos.d/mongo.repo
 
 
-  - name: install mongodb-clinet
+  - name: install mongodb-clinet 
     ansible.builtin.package:
       name: mongodb-org-shell
       state: present 
