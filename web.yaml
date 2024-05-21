@@ -1,4 +1,4 @@
-- nmae: web
+- name: web
   hosts: web
   become: yes
   tasks:
