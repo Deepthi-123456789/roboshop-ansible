@@ -24,6 +24,11 @@
       path: /app
       state: directory
 
+  - name: download user application
+    ansible.builtin.get_url:
+      url: https://roboshop-builds.s3.amazonaws.com/user.zip
+      dest: /tmp
+
   - name: unzip or unarchive the file
     ansible.builtin.unarchive:
       src: /tmp/user.zip
