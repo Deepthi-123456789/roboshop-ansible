@@ -9,9 +9,8 @@
       disable_gpg_check: true
   
   - name: enabling redis remi
-    ansible.builtin.service:
-      name: redis:remi-6.2
-      enabled: yes
+    ansible.builtin.command: redis:remi-6.2
+      
 
   - name: installing redis 
     ansible.builtin.package:
