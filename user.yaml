@@ -37,6 +37,8 @@
 
   - name: installing npm
     ansible.builtin.command: npm install 
+    args:
+      chdir: /app
 
   - name: copying service file
     ansible.builtin.copy:
