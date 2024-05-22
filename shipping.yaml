@@ -26,7 +26,7 @@
 
   - name: downloading an application
     ansible.builtin,get_url:
-     url:  https://roboshop-builds.s3.amazonaws.com/shipping.zip 
+      url:  https://roboshop-builds.s3.amazonaws.com/shipping.zip 
       dest: /tmp
 
   - name: unzipping the file
@@ -47,7 +47,7 @@
 
   - name: copying
     ansible.builtin.copy:
-     src: shipping.service
+      src: shipping.service
       dest: /etc/systemd/system/shipping.service
 
   - name: daemon reloading
