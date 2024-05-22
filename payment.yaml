@@ -2,14 +2,14 @@
   hosts: payment
   become: yes
   tasks: 
-  - name: installing python
-    ansible.builtin.package:
-     name: {{item}}
-     state: present
+  - name: Install python packages
+    ansible.builtin.dnf:
+      name: "{{item}}" 
+      state: present
     loop:
-    -python36 
-    -gcc 
-    -python3-devel
+    - python36
+    - gcc
+    - python3-devel
 
   - name: adding user
     ansible.builtin.user:
@@ -31,22 +31,22 @@
       dest: /app
       remote_src: yes
 
-- name: installing dependencies
-  ansible.builtin.command: pip3.6 install -r requirements.txt
-  args:
-    chdir: /app
+  - name: installing dependencies
+    ansible.builtin.command: pip3.6 install -r requirements.txt
+    args:
+      chdir: /app
 
-- name: copy payment services
-  ansible.builtin.copy:
-    src: payment.service 
-    dest: /etc/systemd/system/payment.service 
+  - name: copy payment services
+    ansible.builtin.copy:
+      src: payment.service 
+      dest: /etc/systemd/system/payment.service 
 
-- name: start and enable mongodb
-  ansible.builtin.service:
-    daemon-reload: true
+  - name: start and enable mongodb
+    ansible.builtin.service:
+      daemon-reload: true
 
-- name: start and enable catalogue
-  ansible.builtin.service:
-    name: catalogue
-    state: restarted
-    enabled: yes
+  - name: start and enable catalogue
+    ansible.builtin.service:
+      name: catalogue
+      state: restarted
+      enabled: yes
