@@ -79,3 +79,10 @@
       name: catalogue
       state: restarted
       enabled: yes
+
+  - name: install mysql
+    ansible.builtin.package:
+      name: install
+      state: present
+
+  
